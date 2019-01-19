@@ -10,7 +10,7 @@ namespace IDResolver.Controllers
         public async Task<IActionResult> ResolveId(string id)
         {
             var callbackUrl = await RedisDatabase.Get<string>(id);
-            return Content(callbackUrl);
+            return Content(callbackUrl?.Data);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -7,9 +8,9 @@ namespace IDResolver.Database
 {
     public static class RedisDatabase
     {
-        public class CacheValue<T>
+        public class CachedValue<T>
         {
-            public T Data;
+            public T Data { get; set; }
         }
 
         public static ConnectionMultiplexer Multiplexer { get; private set; }
@@ -25,18 +26,23 @@ namespace IDResolver.Database
             return redis.KeyExists(key);
         }
 
-        public static Task Set(string key, object value, TimeSpan? ttl = null)
+        public static Task Set<T>(string key, T value, TimeSpan? ttl = null)
         {
-            var serialized = DataPacker.Serialize(value);
+            var serialized = DataPacker.Serialize(new CachedValue<T> {Data = value});
             var redis = Multiplexer.GetDatabase();
             return redis.StringSetAsync(key, serialized, ttl);
         }
 
-        public static async Task<T> Get<T>(string key)
+        public static async Task<CachedValue<T>> Get<T>(string key)
         {
             var redis = Multiplexer.GetDatabase();
             var data = await redis.StringGetAsync(key);
-            return DataPacker.Deserialize<T>(data);
+            return Deserialize<T>(data);
+        }
+
+        private static CachedValue<T> Deserialize<T>(string data)
+        {
+            return string.IsNullOrEmpty(data) ? null : DataPacker.Deserialize<CachedValue<T>>(data);
         }
     }
 
