@@ -11,4 +11,14 @@
         <PackageReference Include="StackExchange.Redis" Version="2.0.519" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Resolve\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Id\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Interface\JsonOutputFormatter.cs" />
+    </ItemGroup>
+
 </Project>
