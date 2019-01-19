@@ -1,6 +1,6 @@
+using IDResolver.Database;
+using IDResolver.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using StackExchange.Redis;
 
 namespace IDResolver.Controllers
 {
@@ -9,21 +9,9 @@ namespace IDResolver.Controllers
         [HttpPost]
         public IActionResult PostId([FromBody] Element element)
         {
-            var redis = ConnectionMultiplexer.Connect("localhost");
-            
-            var db = redis.GetDatabase();
-            db.StringSet(element.Id, element.CallbackUrl);
-        
+            // not awaited
+            RedisDatabase.Set(element.Id, element.CallbackUrl);
             return Json(element);
         }
-    }
-
-    public class Element
-    {
-        [BindRequired]
-        public string Id { set; get; }
-        
-        [BindRequired]
-        public string CallbackUrl { set; get; }
     }
 }

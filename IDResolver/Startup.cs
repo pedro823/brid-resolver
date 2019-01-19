@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IDResolver.Database;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -22,10 +23,14 @@ namespace IDResolver
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var redisHost = "SET_PRODUCTION_HOST_HERE";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                redisHost = "localhost";
             }
+            
+            RedisDatabase.Initialize(redisHost);
 
             app.UseMvc(routes =>
             {
