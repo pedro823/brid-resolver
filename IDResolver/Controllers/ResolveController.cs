@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 
-namespace IDResolver
+namespace IDResolver.Controllers
 {
     public class ResolveController : Controller
     {

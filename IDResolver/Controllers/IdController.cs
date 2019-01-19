@@ -1,10 +1,8 @@
-using System;
-using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackExchange.Redis;
 
-namespace IDResolver
+namespace IDResolver.Controllers
 {
     public class IdController : Controller
     {
