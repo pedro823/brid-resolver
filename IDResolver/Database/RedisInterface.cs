@@ -17,7 +17,19 @@ namespace IDResolver.Database
 
         public static void Initialize(string redisHost)
         {
-            Multiplexer = ConnectionMultiplexer.Connect(redisHost);
+            while (true)
+            {
+                try
+                {
+                    Multiplexer = ConnectionMultiplexer.Connect(redisHost);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Could not connect to redis service at {redisHost}. Retrying in 3s...");
+                    System.Threading.Thread.Sleep(3000);
+                }
+            }
         }
 
         public static bool HasKey(string key)
