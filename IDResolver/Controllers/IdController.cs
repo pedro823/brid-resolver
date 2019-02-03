@@ -6,7 +6,7 @@ namespace IDResolver.Controllers
 {
     public class IdController : Controller
     {
-        [HttpPost]
+        [HttpPost("/id")]
         public IActionResult PostId([FromBody] Element element)
         {
             // not awaited

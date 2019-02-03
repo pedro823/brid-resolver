@@ -32,13 +32,7 @@ namespace IDResolver
             
             RedisDatabase.Initialize(redisHost);
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "resolve", template: "/resolve/{id}",
-                    defaults: new { controller = "Resolve", action = "ResolveId"});
-                routes.MapRoute(name: "id", template: "/id",
-                    defaults: new { controller = "Id", action = "PostId"});
-            });
+            app.UseMvc();
         }
     }
 }
