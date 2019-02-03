@@ -9,5 +9,10 @@ namespace IDResolver.Interface
         
         [BindRequired]
         public string CallbackUrl { set; get; }
+
+        public bool HasNullValues()
+        {
+            return Id == null || CallbackUrl == null;
+        }
     }
 }
