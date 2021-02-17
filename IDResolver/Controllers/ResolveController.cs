@@ -10,7 +10,9 @@ namespace IDResolver.Controllers
         public async Task<IActionResult> ResolveId(string id)
         {
             var callbackUrl = await RedisDatabase.Get<string>(id);
-            return Content(callbackUrl?.Data);
+            if (callbackUrl == null || callbackUrl?.Data == "")
+                return NotFound("There is no resolve to this ID");
+            return Json(callbackUrl);
         }
     }
 }
